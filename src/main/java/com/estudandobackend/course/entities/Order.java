@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.estudandobackend.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Entity;
@@ -19,27 +20,30 @@ import jakarta.persistence.Table;
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	@ Id
+
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	// Para garantir que seja mostrado no formato de string do ISO 8601 
+
+	// Para garantir que seja mostrado no formato de string do ISO 8601
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
-	
-	@ManyToOne  // Muitos pedidos ou nenhum para um cliente
-	@JoinColumn(name = "client_id")  // Nome da chave estrangeira no BD
+
+	private Integer orderStatus; // Internamente sera um inteiro, mas fora sera um enum
+
+	@ManyToOne // Muitos pedidos ou nenhum para um cliente
+	@JoinColumn(name = "client_id") // Nome da chave estrangeira no BD
 	private User client;
 
 	public Order() {
 		super();
 	}
 
-	public Order(Long id, Instant moment, User client) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
 		super();
 		this.id = id;
 		this.moment = moment;
+		setOrderStatus(orderStatus);
 		this.client = client;
 	}
 
@@ -57,6 +61,16 @@ public class Order implements Serializable {
 
 	public void setMoment(Instant moment) {
 		this.moment = moment;
+	}
+
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);  // Transformamos o codigo inteiro em orderstatus referente ao numero do enum
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if (orderStatus != null) {
+			this.orderStatus = orderStatus.getCode();  // Fazemos o processo inverso, this.orderstatus eh inteiro, entao pegamos o codigo int
+		}
 	}
 
 	public User getClient() {
