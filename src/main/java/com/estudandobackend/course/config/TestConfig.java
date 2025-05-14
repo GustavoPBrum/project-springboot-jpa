@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.estudandobackend.course.entities.Category;
 import com.estudandobackend.course.entities.Order;
 import com.estudandobackend.course.entities.OrderItem;
+import com.estudandobackend.course.entities.Payment;
 import com.estudandobackend.course.entities.Product;
 import com.estudandobackend.course.entities.User;
 import com.estudandobackend.course.entities.enums.OrderStatus;
@@ -69,7 +70,7 @@ public void run(String... args) throws Exception {
 	
 	Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), OrderStatus.PAID, u1);
 	Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.WAITING_PAYMMENT, u2);
-	Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.SHIPPED, u1); 
+	Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.WAITING_PAYMMENT, u1); 
 	
 	userRepository.saveAll(Arrays.asList(u1, u2));
 	orderRepository.saveAll(Arrays.asList(o1, o2, o3));
@@ -80,5 +81,10 @@ public void run(String... args) throws Exception {
 	OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice()); 
 	
 	orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+	
+	Payment pay1 = new Payment(null, Instant.parse("2019-06-20T21:53:07Z"), o1);
+	o1.setPayment(pay1); // Associamos o Order1 com pay1 e salvamos novamente o pedido. O JPA trata de salvar o pagamento do pedido
+
+	orderRepository.save(o1);
 } 
 }
