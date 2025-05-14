@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,6 +37,9 @@ public class Product  implements Serializable{
 	// Depois o nome da chave estrangeira da outra tabela, no caso category, a sequencia se inverteria se fosse feito essas anotacoes no category
 	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn (name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
+	
+	@OneToMany(mappedBy = "id.product")  // Id possui no OrderItemPK tanto Order, quanto Product
+	private Set<OrderItem> items = new HashSet<>();
 	 
 	public Product() {
 	}
@@ -91,6 +97,16 @@ public class Product  implements Serializable{
 		return categories;
 	}
 
+	// Mais vale os produtos retornar uma colecao com os pedidos associados a ele, sendo mais util
+	@JsonIgnore
+	public Set<Order> getOrders() {
+		Set<Order> set = new HashSet<>();
+		for(OrderItem oi : items) {  // Para cada orderItem na colecao de OrderItems do produto
+			set.add(oi.getOrder());  // Salvamos na colecao as Orders assocociados a cada OrderItem
+		}
+		return set;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
