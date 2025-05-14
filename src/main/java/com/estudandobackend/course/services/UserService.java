@@ -24,5 +24,9 @@ public class UserService {
 		 
 		return obj.get();  // A operacao 'get' do optional vai retornar o objeto do tipo entre <> (no caso User) que estiver dentro de *obj*
 	}
+	
+	public User insert(User obj) {  // Retornar o usuario salvo
+		return repository.save(obj);  // Por padrao, o save ja retorna o objeto salvo
+	}
 
 }
