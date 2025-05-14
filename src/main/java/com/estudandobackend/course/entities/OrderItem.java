@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.estudandobackend.course.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -14,8 +15,9 @@ import jakarta.persistence.Table;
 public class OrderItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	// Identificador da nossa classe (PK)
 	@EmbeddedId
-	private OrderItemPK id;  // Identificador da nossa classe (PK)
+	private OrderItemPK id = new OrderItemPK(); // Temos que instanciar toda classe auxiliar com ID composto pois se nao sera nulo
 	
 	private Integer quantity;
 	private Double price;
@@ -31,6 +33,7 @@ public class OrderItem implements Serializable {
 		this.price = price;
 	}
 
+	@JsonIgnore  // Este get chamava o pedido associado a este OrderItem, que por sua vez chamava o OrderItem novamente gerando referencia ciclica
 	public Order getOrder() {
 		return id.getOrder();
 	}
