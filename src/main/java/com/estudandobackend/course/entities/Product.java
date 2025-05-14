@@ -9,8 +9,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_product")
@@ -27,7 +29,10 @@ public class Product  implements Serializable{
 	private String imgUrl;
 	
 	// Dentro do Produto, temos um conjunto de categorias
-	@Transient
+	@ManyToMany
+	// Primeiro o nome da tabela de associacao, depois o nome da chave estrangeira referente a tabela de product (onde estamos)
+	// Depois o nome da chave estrangeira da outra tabela, no caso category, a sequencia se inverteria se fosse feito essas anotacoes no category
+	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn (name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 	 
 	public Product() {
