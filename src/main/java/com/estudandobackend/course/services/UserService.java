@@ -39,7 +39,7 @@ public class UserService {
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {  // Tentou achar para deletar e nao encontrou
 			throw new ResourceNotFoundException(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
@@ -51,7 +51,7 @@ public class UserService {
 			User entity = findById(id); // Deixa nosso obj monitorado pelo JPA para depois realizarmos operacoes com o banco de dados
 			updateData(entity, obj);
 			return repository.save(entity);
-		} catch (EntityNotFoundException e) {
+		} catch (EntityNotFoundException e) {  // Tentou achar para atualizar e nao encontrou
 			throw new ResourceNotFoundException(id);
 		}
 	}
