@@ -29,4 +29,7 @@ public class UserService {
 		return repository.save(obj);  // Por padrao, o save ja retorna o objeto salvo
 	}
 
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,5 +45,12 @@ public class UserResource {
     	// Padrao HTTP para retorno 201tem que ter umm cabecalho chamado Location com o endereco do novo recurso inserido
     	URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
     	return ResponseEntity.created(uri).body(obj); 
+    }
+
+    // Quando vamos deletar, passamos o Id
+    @DeleteMapping(value = "/{id}")   // Tipo void pois nao tera retorno nenhum do HTTP
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    	service.delete(id);
+    	return ResponseEntity.noContent().build();   // noContent retorna uma resposta vazia e trata ja do codigo HTTP 204 (resposta sem conteudo)
     }
 }
