@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.estudandobackend.course.entities.User;
 import com.estudandobackend.course.repositories.UserRepository;
+import com.estudandobackend.course.services.exceptions.ResourceNotFoundException;
 
 @Service  // Registrando como um componente Spring para ser automaticamente injetadoe deixando mais semanticamente correto e especifico
 public class UserService {
@@ -22,7 +23,8 @@ public class UserService {
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
 		 
-		return obj.get();  // A operacao 'get' do optional vai retornar o objeto do tipo entre <> (no caso User) que estiver dentro de *obj*
+		// A operacao 'get' do optional vai retornar o objeto do tipo entre <> (no caso User) que estiver dentro de *obj*
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));  // Tenta fazer o get, caso contrario, lanca a excecao definida
 	}
 	
 	public User insert(User obj) {  // Retornar o usuario salvo
