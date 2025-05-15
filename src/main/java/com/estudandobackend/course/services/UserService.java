@@ -13,6 +13,8 @@ import com.estudandobackend.course.repositories.UserRepository;
 import com.estudandobackend.course.services.exceptions.DatabaseException;
 import com.estudandobackend.course.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service  // Registrando como um componente Spring para ser automaticamente injetadoe deixando mais semanticamente correto e especifico
 public class UserService {
 
@@ -45,9 +47,13 @@ public class UserService {
 	}
 	
 	public User update(Long id, User obj) {
-		User entity = findById(id); // Deixa nosso obj monitorado pelo JPA para depois realizarmos operacoes com o banco de dados
-		updateData(entity, obj);
-		return repository.save(entity);
+		try {
+			User entity = findById(id); // Deixa nosso obj monitorado pelo JPA para depois realizarmos operacoes com o banco de dados
+			updateData(entity, obj);
+			return repository.save(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User entity, User obj) {
