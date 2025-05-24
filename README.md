@@ -10,6 +10,8 @@ Este projeto é uma aplicação desenvolvida com **Java** e **Spring Boot** que 
 - **Spring Boot**  
 - **Apache Tomcat**  
 - **Maven** (gerenciamento de dependências e build)  
+- **JPA** (persistência de dados e mapeamento objeto-relacional)  
+- **Hibernate** (implementação da interface JPA)  
 - **H2 Database** (banco de dados em memória para testes)  
 - **PostgreSQL** (banco de dados em produção)  
 - **Postman** (testes de requisições HTTP)  
@@ -38,10 +40,14 @@ Este projeto é uma aplicação desenvolvida com **Java** e **Spring Boot** que 
    - **H2 Database**: Banco de dados em memória para testes, configurado automaticamente (não é necessário baixar nada).  
    - **PostgreSQL**: Banco de dados em produção.  
 
-4. **CRUD (Create, Retrieve, Update, Delete)**:  
+4. **JPA e Hibernate**:  
+   - **JPA**: Fornece a abstração para persistência de dados e mapeamento objeto-relacional (ORM).  
+   - **Hibernate**: Responsável por implementar a interface JPA e gerenciar as operações de banco de dados.  
+
+5. **CRUD (Create, Retrieve, Update, Delete)**:  
    - Operações completas para todas as entidades.  
 
-5. **Tratamento de Exceções**:  
+6. **Tratamento de Exceções**:  
    - Gerenciamento e padronização de erros para garantir uma API consistente e confiável.  
 
 ---
